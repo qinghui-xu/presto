@@ -14,7 +14,6 @@
 package io.prestosql.server.extension.query.history;
 
 import io.prestosql.execution.QueryInfo;
-import io.prestosql.server.BasicQueryInfo;
 import io.prestosql.server.extension.Extension;
 import io.prestosql.spi.QueryId;
 
@@ -26,9 +25,9 @@ import java.io.Closeable;
 public interface QueryHistoryStore
         extends Extension, Closeable
 {
-    QueryInfo getFullQueryInfo(QueryId queryId);
+    String getFullQueryInfo(QueryId queryId);
 
-    BasicQueryInfo getBasicQueryInfo(QueryId queryId);
+    String getBasicQueryInfo(QueryId queryId);
 
     void saveFullQueryInfo(QueryInfo queryInfo);
 }
