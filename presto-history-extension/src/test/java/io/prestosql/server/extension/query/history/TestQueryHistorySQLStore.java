@@ -38,7 +38,6 @@ import java.util.Properties;
 
 import static io.prestosql.SessionTestUtils.TEST_SESSION;
 import static io.prestosql.operator.BlockedReason.WAITING_FOR_MEMORY;
-import static io.prestosql.server.extension.query.history.QueryHistoryDAO.CREATE_TABLE_TEST;
 import static io.prestosql.server.extension.query.history.QueryHistorySQLStore.PRESTO_CLUSTER_KEY;
 import static io.prestosql.server.extension.query.history.QueryHistorySQLStore.SQL_CONFIG_PREFIX;
 import static org.testng.Assert.assertEquals;
@@ -157,14 +156,6 @@ public class TestQueryHistorySQLStore
     public void shutdownMariaDB() throws Exception
     {
         mariaDB.stop();
-    }
-
-    // Table will be created by h2 datasource, using the init script in the jdbc url. The history store then just uses it.
-    @Test
-    public void testSaveAndReadQueryInfoWithH2() throws IOException
-    {
-        String h2dbUrl = "jdbc:h2:mem:query-store-test;INIT=" + CREATE_TABLE_TEST;
-        testSaveAndReadQueryInfo(h2dbUrl);
     }
 
     private void testSaveAndReadQueryInfo(String jdbcUrl) throws IOException

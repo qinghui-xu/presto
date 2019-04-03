@@ -26,7 +26,7 @@ public interface QueryHistoryDAO
     String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS query_history (" +
             "id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
             "cluster VARCHAR(20) NOT NULL, " +
-            "query_id VARCHAR(100) NOT NULL, " +
+            "query_id VARCHAR(100) UNIQUE NOT NULL, " +
             "query_state VARCHAR(10) NOT NULL, " +
             "user VARCHAR(50) NOT NULL, " +
             "source VARCHAR(50), " +
@@ -34,13 +34,16 @@ public interface QueryHistoryDAO
             "create_time TIMESTAMP NOT NULL, " +
             "end_time TIMESTAMP, " +
             "query VARCHAR(2000) NOT NULL, " +
-            "query_info LONGTEXT COMPRESSED=zlib NOT NULL)";
+            "query_info LONGTEXT COMPRESSED=zlib NOT NULL, " +
+            "INDEX idx_user (user), " +
+            "INDEX idx_create_time (create_time), " +
+            "INDEX idx_end_time (end_time))";
 
     // DDL for test purpose (the compressed attribute is not yet supported in current MariaDB4J version for test)
     String CREATE_TABLE_TEST = "CREATE TABLE IF NOT EXISTS query_history (" +
             "id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
             "cluster VARCHAR(20) NOT NULL, " +
-            "query_id VARCHAR(100) NOT NULL, " +
+            "query_id VARCHAR(100) UNIQUE NOT NULL, " +
             "query_state VARCHAR(10) NOT NULL, " +
             "user VARCHAR(50) NOT NULL, " +
             "source VARCHAR(50), " +
@@ -48,7 +51,10 @@ public interface QueryHistoryDAO
             "create_time TIMESTAMP NOT NULL, " +
             "end_time TIMESTAMP, " +
             "query VARCHAR(2000) NOT NULL, " +
-            "query_info LONGTEXT NOT NULL)";
+            "query_info LONGTEXT NOT NULL, " +
+            "INDEX idx_user (user), " +
+            "INDEX idx_create_time (create_time), " +
+            "INDEX idx_end_time (end_time))";
 
     /**
      *  For test only, you need to create the table in preprod/prod by using CREATE_TABLE statement before enable the extension.
