@@ -175,7 +175,8 @@ public class QueryTracker<T extends TrackedQuery>
         saveQueryHistory(expiredQuery);
     }
 
-    private void saveQueryHistory(Optional<T> expiredQuery) {
+    private void saveQueryHistory(Optional<T> expiredQuery)
+    {
         // Save the expired query to the history store with help of the extension.
         expiredQuery.filter(query -> query instanceof QueryExecution)
                 .map(QueryExecution.class::cast)
