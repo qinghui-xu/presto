@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList;
 import io.airlift.log.Logger;
 import io.airlift.units.Duration;
 import io.prestosql.Session;
+import io.prestosql.execution.QueryTracker.TrackedQuery;
 import io.prestosql.server.extension.query.history.QueryHistoryStore;
 import io.prestosql.server.extension.query.history.QueryHistoryStoreFactory;
 import io.prestosql.spi.PrestoException;
@@ -47,7 +48,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 @ThreadSafe
-public class QueryTracker<T extends QueryExecution>
+public class QueryTracker<T extends TrackedQuery>
 {
     private static final Logger log = Logger.get(QueryTracker.class);
 
@@ -171,10 +172,15 @@ public class QueryTracker<T extends QueryExecution>
     {
         Optional<T> expiredQuery = tryGetQuery(queryId);
         expiredQuery.ifPresent(expirationQueue::add);
+        saveQueryHistory(expiredQuery);
+    }
+
+    private void saveQueryHistory(Optional<T> expiredQuery) {
         // Save the expired query to the history store with help of the extension.
-        expiredQuery.ifPresent(query ->
-                queryHistoryStore.ifPresent(store ->
-                        store.saveFullQueryInfo(query.getQueryInfo())));
+        expiredQuery.filter(query -> query instanceof QueryExecution)
+                .map(QueryExecution.class::cast)
+                .ifPresent(query ->
+                        queryHistoryStore.ifPresent(store -> store.saveFullQueryInfo(query.getQueryInfo())));
     }
 
     /**
