@@ -52,8 +52,6 @@ public class QueryTracker<T extends TrackedQuery>
 {
     private static final Logger log = Logger.get(QueryTracker.class);
 
-    public static final String QUERY_HISTORY_EXTENSION_CONFIG_FILE = "etc/extension/query-history-store.properties";
-
     private final int maxQueryHistory;
     private final Duration minQueryExpireAge;
 

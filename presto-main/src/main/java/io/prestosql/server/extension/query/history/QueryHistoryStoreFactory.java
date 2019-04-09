@@ -24,10 +24,10 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
 
-import static io.prestosql.execution.QueryTracker.QUERY_HISTORY_EXTENSION_CONFIG_FILE;
-
 public class QueryHistoryStoreFactory
 {
+    public static final String QUERY_HISTORY_EXTENSION_CONFIG_FILE = "etc/query-history-store.properties";
+
     private static final Logger log = Logger.get(QueryHistoryStoreFactory.class);
 
     private static final Optional<QueryHistoryStore> binding = loadQueryHistoryExtension();
